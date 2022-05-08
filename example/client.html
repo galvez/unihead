@@ -7,13 +7,16 @@
 <meta name="description" content="...">
 <script type="text/javascript" async="" src="/dummy.js">
 </script>
+<script src="/head.js"></script>
 <script>
-function foobar () {
-
+function changeTitle () {
+	window.head.title = 'Changed title'
 }
 </script>
-<script src="/head.js"></script>
 </head>
 
-<p>&lt;head&gt; management test</p>
+<h1>&lt;head&gt; management test</h1>
+<div>
+	<button onclick="changeTitle()">Change title</button>
+</div>
 <pre></pre>
