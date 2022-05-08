@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "dependencies": {
+    "fastify": "^3.29.0"
+  }
+}
