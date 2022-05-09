@@ -4,7 +4,7 @@ Simple, fast, universal JS `<head>` server-side writer and client-side manager.
 
 Nearly every SSR framework out there relies on server-side components to update the `<head>`. This is the case for [Next][1], [Nuxt 2][2], [Nuxt 3][3] and [Remix][4]. The problem with that approach is that the `<head>` becomes dependent on your entire component stack being server-side rendered first, which is generally expensive and prevents you from streaming the `<head>` right away to the client. 
 
-**`unihead`** is a library conveniently packing both a server-side API, that lets you generate a `<head>` element programatically, and a client-side API that hydrates the rendered `<head>` client-side independently of the framework you're using (all Vanilla JavaScript) and lets you **mutate it** and also **reset it** to its original state (useful for managing `<head>` inbetween client-side route navigation). 
+**`unihead`** is a library conveniently packing both a server-side API, that lets you generate `<head>` elements programatically, and a client-side API that hydrates a data model from the rendered elements independently of the framework you're using (all vanilla JavaScript) and lets you **mutate it** and also **reset it** to its original state (useful for managing `<head>` inbetween client-side route navigation). 
 
 Read [this blog post]() for more info.
 
@@ -23,16 +23,45 @@ Read [this blog post]() for more info.
 **Server usage**
 
 </h2>
-
-The core idea behind this library is that SSR `<head>` management typically inefficient when tightly-coupled with component rendering at the framework level, i.e., Vue, React etc. It supports the adoption of an **_alternative pattern_** where all data required for rendering `<head>` elements is fetched prior to any framework-level component rendering, so it can be streamed to the client right away.
   
-The server-side component of this library exports a class with two methods: `render()`, which will produce a full string with all rendered `<head>` elements, and `stream()`, which returns a `Readable` Node.js stream (built from an `AsyncIterator`) that _yields_ one `<head>` element at a time.
+The server module of this package supports the adoption of an **_alternative pattern_** where all data required for rendering `<head>` elements is fetched prior to any framework-level component rendering, so it can be streamed to the client right away. 
+  
+Server-side import example:
+  
+```js
+import Head from 'unihead'
+```
 
+The server-side `<head>` cannot be mutated, it must be created only once from an object.
 
 </td>
 <td valign="top"><br>
 
+```js
+import Head from 'unihead'
 
+const head = new Head({
+  title: 'Page Title'
+  meta: [
+    { name: 'twitter:title', content: 'Page Title' }
+  ],
+})
+```
+
+Below are two small snippets demonstrating usage with Fastify. There are two methods available `render()`, which produces a full string with all rendered `<head>` elements.
+
+
+```js
+const server = Fastify()
+server.get('/', (req, reply) => {
+  const head = new Head({ ... }).reander()
+  reply.type('text/html')
+  reply.send(`<head>${head}</head><body>...</body>`)
+})
+```
+  
+And `stream()`, which returns a `Readable` Node.js stream (built from an `AsyncIterator`) that _yields_ one `<head>` element at a time.
+  
 ```js
 import Fastify from 'fastify'
 import Head from 'unihead'
@@ -40,25 +69,12 @@ import Head from 'unihead'
 const server = Fastify()
 
 server.get('/', (req, reply) => {
-  const head = new Head({
-    title: 'Page title'
-    base: {
-      href: 'https://example.com',
-      target: '_blank'
-    },
-    meta: [
-      {
-        name: 'twitter:title',
-        content: 'Title'
-      }
-    ],
-  })
+  const head = new Head({ ... }).reander()
   reply.type('text/html')
-  reply.send(`<html><head>${
-  	head.render()
-  }</head><p>Head test</p></html>`)
+  reply.send(`<head>${head}</head><body>...</body>`)
 })
 ```
+  
 
 ...
 
