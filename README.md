@@ -24,10 +24,6 @@ Read [this blog post]() for more info.
 
 </h2>
 
-```js
-import Head from 'unihead'
-```
-
 The server module of this package supports the adoption of an **_alternative pattern_** where all data required for rendering `<head>` elements is fetched prior to any framework-level component rendering, so it can be streamed to the client right away. 
 
 The server-side `<head>` cannot be mutated, it must be created only once from an object.
@@ -36,6 +32,8 @@ The server-side `<head>` cannot be mutated, it must be created only once from an
 <td valign="top"><br>
 
 ```js
+import Head from 'unihead'
+
 const head = new Head({
   title: 'Page Title'
   meta: [
@@ -51,12 +49,63 @@ There are two methods available: `render()`, which produces a full string with a
 ```js
 const head = new Head({ ... }).render()
 reply.send(`<head>${head}</head><body>...</body>`)
-})
 ```
   
 And `stream()`, which returns a `Readable` Node.js stream (built from an `AsyncIterator`) that _yields_ one `<head>` element at a time. 
 
 See a full streaming example [here]().
+
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="300px" valign="top">
+
+<h2>
+
+**Client usage (build tool)**
+
+</h2>
+
+If you're using a tool such as Vite to build your client application build, import the `client` module of the package and instantiate Head the same way it is done on the server.
+
+</td>
+<td valign="top"><br>
+
+1. Include client script as last element of your `<head>`:
+
+```html
+<head>
+  <!-- Head elements -->
+  <script src="https://unpkg.com/unihead"></script>
+</head>
+```
+
+2. `window.head` is available immediately afterwards. It'll store the current 
+`<head>` state internally and let you modify it or reset it to its orignal state.
+
+```js
+// Add or mutate <head> elements when possible
+window.head.title = 'Page title'
+window.head.base = {
+  href: 'https://example.com',
+  target: '_blank'
+}
+window.head.meta.set({
+  name: 'twitter:title',
+  content: 'Title' }
+)
+window.head.meta.remove((elem) => {
+  return elem.attrs.name === 'twitter:title'
+})
+window.head.meta.remove({ name: 'twitter:title' })
+
+// Reset <head> to its original state
+window.head.reset()
+```
+
 
 </td>
 </tr>
@@ -69,7 +118,7 @@ See a full streaming example [here]().
 
 <h2>
 
-**Client usage**
+**Client usage (build tool)**
 
 </h2>
 
