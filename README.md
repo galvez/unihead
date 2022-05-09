@@ -2,7 +2,7 @@
 
 Simple, fast, universal JS `<head>` server-side writer and client-side manager.
 
-Nearly every SSR framework out there relies on server-side components to update the `<head>`. This is the case for [Next][1], [Nuxt 2][2], [Nuxt 3][3] and [Remix][4].
+Nearly every SSR framework out there relies on server-side components to update the `<head>`. This is the case for [Next][1], [Nuxt 2][2], [Nuxt 3][3] and [Remix][4]. The problem with that approach is that the `<head>` becomes dependent on your entire component stack being server-side rendered first, which is generally expensive and prevents you from streaming the `<head>` right away to the client. Read [this blog post]() for more info.
 
 [1]: https://nuxtjs.org/docs/components-glossary/head/
 [2]: https://v3.nuxtjs.org/guide/features/head-management
