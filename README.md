@@ -24,12 +24,14 @@ Read [this blog post]() for more info.
 
 </h2>
 
-...
+The core idea behind this library is that SSR `<head>` management typically inefficient when tightly-coupled with component rendering at the framework level, i.e., Vue, React etc. It supports the adoption of an **_alternative pattern_** where all data required for rendering `<head>` elements is fetched prior to any framework-level component rendering, so it can be streamed to the client right away.
+  
+The server-side component of this library exports a class with two methods: `render()`, which will produce a full string with all rendered `<head>` elements, and `stream()`, which returns a `Readable` Node.js stream (built from an `AsyncIterator`) that _yields_ one `<head>` element at a time.
+
 
 </td>
 <td valign="top"><br>
 
-...
 
 ```js
 import Fastify from 'fastify'
@@ -40,8 +42,16 @@ const server = Fastify()
 server.get('/', (req, reply) => {
   const head = new Head({
     title: 'Page title'
-    base: { href: 'https://example.com', target: '_blank' },
-    meta: [{ name: 'twitter:title', content: 'Title' }],
+    base: {
+      href: 'https://example.com',
+      target: '_blank'
+    },
+    meta: [
+      {
+        name: 'twitter:title',
+        content: 'Title'
+      }
+    ],
   })
   reply.type('text/html')
   reply.send(`<html><head>${
@@ -87,9 +97,17 @@ server.get('/', (req, reply) => {
 ```js
 // Add or mutate <head> elements when possible
 window.head.title = 'Page title'
-window.head.base = { href: 'https://example.com', target: '_blank' }
-window.head.meta.push({ name: 'twitter:title', content: 'Title' })
-window.head.meta.remove(elem => elem.attrs.name === 'twitter:title')
+window.head.base = {
+  href: 'https://example.com',
+  target: '_blank'
+}
+window.head.meta.set({
+  name: 'twitter:title',
+  content: 'Title' }
+)
+window.head.meta.remove((elem) => {
+  return elem.attrs.name === 'twitter:title'
+})
 window.head.meta.remove({ name: 'twitter:title' })
 
 // Reset <head> to its original state
