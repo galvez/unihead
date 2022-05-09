@@ -1,8 +1,31 @@
 # unihead
 
-## Simple, fast, universal JS `<head>` management.
+Simple, fast, universal JS `<head>` server-side writer and client-side manager.
 
-### Server usage
+Nearly every SSR framework out there relies on server-side components to update the `<head>`. This is the case for [Next][1], [Nuxt 2][2], [Nuxt 3][3] and [Remix][4].
+
+[1]: https://nuxtjs.org/docs/components-glossary/head/
+[2]: https://v3.nuxtjs.org/guide/features/head-management
+[3]: https://github.com/remix-run/remix/blob/main/packages/remix-react/components.tsx#L650
+[4]: https://nextjs.org/docs/api-reference/next/head
+
+
+<table>
+<tr>
+<td width="300px" valign="top">
+
+<h2>
+
+**Server usage**
+
+</h2>
+
+...
+
+</td>
+<td valign="top"><br>
+
+...
 
 ```js
 import Fastify from 'fastify'
@@ -23,7 +46,27 @@ server.get('/', (req, reply) => {
 })
 ```
 
-### Client usage
+...
+
+</td>
+</tr>
+</table>
+
+
+<table>
+<tr>
+<td width="300px" valign="top">
+
+<h2>
+
+**Client usage**
+
+</h2>
+
+...
+
+</td>
+<td valign="top"><br>
 
 1. Include client script as last element of your `<head>`:
 
@@ -48,3 +91,9 @@ window.head.meta.remove({ name: 'twitter:title' })
 // Reset <head> to its original state
 window.head.reset()
 ```
+
+
+</td>
+</tr>
+</table>
+
