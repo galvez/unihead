@@ -85,31 +85,6 @@ const head = new Head({
 })
 ```
 
-The main difference between the *server* and *client* modules is that the latter allows you to mutate the data, i.e., change existing elements or add new ones if needed.
-  
-In the case of single elements like `title` and `base`, you can use the following API:
-
-```js
-head.title = 'Page title'
-head.base = { href: 'https://...', target: '_blank' }
-}
-```
-
-```js
-window.head.meta.set({
-  name: 'twitter:title',
-  content: 'Title' }
-)
-window.head.meta.remove((elem) => {
-  return elem.attrs.name === 'twitter:title'
-})
-window.head.meta.remove({ name: 'twitter:title' })
-
-// Reset <head> to its original state
-window.head.reset()
-```
-
-
 </td>
 </tr>
 </table>
@@ -125,7 +100,7 @@ window.head.reset()
 
 </h2>
 
-...
+A global registration distribution is also available, that lets you simply include `unihead` as the *last* script import of your `<head>` and have it globally available (and automatically instantiated) in the `window` object.
 
 </td>
 <td valign="top"><br>
@@ -139,29 +114,8 @@ Include the vanilla JS distribution as last element of your `<head>`:
 </head>
 ```
 
-2. `window.head` is available immediately afterwards. It'll store the current 
+`window.head` is available immediately afterwards. It'll store the current 
 `<head>` state internally and let you modify it or reset it to its orignal state.
-
-```js
-// Add or mutate <head> elements when possible
-window.head.title = 'Page title'
-window.head.base = {
-  href: 'https://example.com',
-  target: '_blank'
-}
-window.head.meta.set({
-  name: 'twitter:title',
-  content: 'Title' }
-)
-window.head.meta.remove((elem) => {
-  return elem.attrs.name === 'twitter:title'
-})
-window.head.meta.remove({ name: 'twitter:title' })
-
-// Reset <head> to its original state
-window.head.reset()
-```
-
 
 </td>
 </tr>
