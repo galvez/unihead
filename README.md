@@ -74,25 +74,28 @@ If you're using a tool such as Vite to build your client application build, impo
 </td>
 <td valign="top"><br>
 
-1. Include client script as last element of your `<head>`:
+```js
+import Head from 'unihead'
 
-```html
-<head>
-  <!-- Head elements -->
-  <script src="https://unpkg.com/unihead"></script>
-</head>
+const head = new Head({
+  title: 'Page Title'
+  meta: [
+    { name: 'twitter:title', content: 'Page Title' }
+  ],
+})
 ```
 
-2. `window.head` is available immediately afterwards. It'll store the current 
-`<head>` state internally and let you modify it or reset it to its orignal state.
+The main difference between the *server* and *client* modules is that the latter allows you to mutate the data, i.e., change existing elements or add new ones if needed.
+  
+In the case of single elements like `title` and `base`, you can use the following API:
 
 ```js
-// Add or mutate <head> elements when possible
-window.head.title = 'Page title'
-window.head.base = {
-  href: 'https://example.com',
-  target: '_blank'
+head.title = 'Page title'
+head.base = { href: 'https://...', target: '_blank' }
 }
+```
+
+```js
 window.head.meta.set({
   name: 'twitter:title',
   content: 'Title' }
@@ -118,7 +121,7 @@ window.head.reset()
 
 <h2>
 
-**Client usage (build tool)**
+**Client usage (vanilla)**
 
 </h2>
 
@@ -127,7 +130,7 @@ window.head.reset()
 </td>
 <td valign="top"><br>
 
-1. Include client script as last element of your `<head>`:
+Include the vanilla JS distribution as last element of your `<head>`:
 
 ```html
 <head>
