@@ -1,22 +1,56 @@
 <head>
-<title>Page title</title>
+<!--title>Page title</title-->
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link media="all" href="/dummy.css" rel="stylesheet">
-<title>Title</title>
 <meta name="description" content="...">
 <script type="text/javascript" async="" src="/dummy.js">
 </script>
 <script src="/head.js"></script>
+<style>
+body, div {
+	display: flex;
+	place-items: center;
+	flex-direction: column;
+}
+</style>
 <script>
+function addMetaTag () {
+	window.head.meta.set({
+		name: 'twitter:url',
+		content: 'http://twitter.com/anothergalvez'
+	})
+}
+function addMultipleMetaTags () {
+	window.head.meta.push([{
+		name: 'twitter:url',
+		content: 'http://twitter.com/anothergalvez'
+	}, {
+		name: 'twitter:description',
+		content: 'Test description'
+	}])
+}
+function changeViewport () {
+	window.head.meta.set({
+		name: 'viewport',
+		content: 'initial-scale=1, maximum-scale=1'
+	})
+}
 function changeTitle () {
 	window.head.title = 'Changed title'
+}
+function reset () {
+	window.head.reset()
 }
 </script>
 </head>
 
 <h1>&lt;head&gt; management test</h1>
 <div>
-	<button onclick="changeTitle()">Change title</button>
+	<p><button onclick="changeTitle()">changeTitle()</button></p>
+	<p><button onclick="changeViewport()">changeViewport()</button></p>
+	<p><button onclick="addMultipleMetaTags()">addMultipleMetaTags()</button></p>
+	<p><button onclick="changeMetaTag()">changeMetaTag()</button></p>
+	<p><button onclick="reset()">reset()</button></p>
 </div>
 <pre></pre>
