@@ -65,25 +65,40 @@ See a full streaming example [here]().
 
 <h2>
 
-**Client usage (build tool)**
+**Client usage**
 
 </h2>
 
 If you're using a tool such as Vite to build your client application build, import the `client` module of the package and instantiate Head the same way it is done on the server.
+  
+A global registration distribution is also available, that lets you simply include `unihead` as the *last* script import of your `<head>` and have it globally available (and automatically instantiated) in the `window` object.
+
+The client `Head` class will load the rendered `<head>` from the page internally in a data model and let you modify it or reset it to its orignal state if needed.
+
 
 </td>
 <td valign="top"><br>
+  
+Import using a build tool:
 
 ```js
-import Head from 'unihead'
+import Head from 'unihead/client'
 
-const head = new Head({
-  title: 'Page Title'
-  meta: [
-    { name: 'twitter:title', content: 'Page Title' }
-  ],
-})
+const head = new Head()
 ```
+  
+Vanilla script include (last element of your `<head>`):
+
+```html
+<head>
+  <!-- Head elements -->
+  <script src="https://unpkg.com/unihead"></script>
+</head>
+```
+
+In which case `window.head` is available immediately afterwards, automatically instantied from the `Head` class. 
+
+This option is provided for easily integrating **`unihead`** with any kind of vanilla HTML/JS application.
 
 </td>
 </tr>
@@ -96,26 +111,53 @@ const head = new Head({
 
 <h2>
 
-**Client usage (vanilla)**
+**Mutation methods**
 
 </h2>
 
-A global registration distribution is also available, that lets you simply include `unihead` as the *last* script import of your `<head>` and have it globally available (and automatically instantiated) in the `window` object.
+The main difference between the *server* and *client* modules is that the latter allows you to mutate the data, i.e., change existing elements or add new ones if needed. API follows:
+  
+- `head.title`
+- `head.base`
+- `head.meta[]`
+- `head.link[]`
+- `head.style[]`
+- `head.script[]`
 
 </td>
 <td valign="top"><br>
+  
+For the single, empty elements `title` and `base`, assignment:
 
-Include the vanilla JS distribution as last element of your `<head>`:
-
-```html
-<head>
-  <!-- Head elements -->
-  <script src="https://unpkg.com/unihead"></script>
-</head>
+```js
+head.title = 'Page title'
+head.base = { href: 'https://...', target: '_blank' }
 ```
 
-`window.head` is available immediately afterwards. It'll store the current 
-`<head>` state internally and let you modify it or reset it to its orignal state.
+For the collective empty elements `meta` and `link`, `set()`:
+
+```js
+window.head.meta.set({
+  name: 'twitter:title',
+  content: 'Title'
+})
+```
+
+In the case of `<meta>` tags, `name` and `property` are used to uniquely identify a tag and mutate it without having to add a new one if it already exists.
+  
+To remove collection items:
+  
+```js
+window.head.meta.remove((elem) => {
+  return elem.attrs.name === 'twitter:title'
+})
+```
+
+Finally, you can fully reset <head> to its original state:
+  
+```js
+window.head.reset()
+```
 
 </td>
 </tr>
