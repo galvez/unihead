@@ -10,16 +10,19 @@ class HeadElement {
     this.value = elem ? elem.textContent : ''
     this.attrs = elem ? this.getAttributes(elem.attributes || []) : {}
   }
+
   getAttributes (attributes) {
     return Object.fromEntries([...attributes].map((attr) => {
       return [attr.name, attr.textContent]
     }))
   }
+
   create ({ value, attrs }) {
     this.elem = document.createElement(this.name)
     this.update({ value, attrs })
     return this.elem
   }
+
   update ({ value, attrs }) {
     if (attrs) {
       for (const [attr, value] of Object.entries(attrs)) {
@@ -49,6 +52,7 @@ class HeadData {
     this.style = []
     this.script = []
   }
+
   find (elem, { attrs, value }) {
     if (elem === 'meta') {
       for (const item of this[elem]) {
@@ -94,19 +98,21 @@ class HeadManager {
         : new HeadElement(null, tag)
     }
   }
+
   getSingle (elem) {
-    if (document.head.contains(this[route].elem)) {
+    if (document.head.contains(this.route[elem])) {
       return this.route[elem]
     } else if (document.head.contains(this.original[elem].elem)) {
       return this.orignal[elem]
     }
   }
-  // Sets a single <head> element like <title> or <base> 
+
+  // Sets a single <head> element like <title> or <base>
   setSingle (elem, { value, attrs }) {
     // If element has already been added or mutated before, just update
     if (this.route[elem].elem) {
       this.route[elem].update({ value, attrs })
-    // If element hasn't been added or mutated yet      
+    // If element hasn't been added or mutated yet
     } else {
       // If there's a matching element already on the page
       if (this.original[elem].elem) {
@@ -118,9 +124,11 @@ class HeadManager {
       }
     }
   }
+
   setSelfClosingItem (elem, attrs) {
     this.setItem(elem, { attrs })
   }
+
   setItem (elem, { attrs, value }) {
     let routeElem = this.route.find(elem, { value, attrs })
     // If element has been added or mutated already
@@ -144,6 +152,7 @@ class HeadManager {
       }
     }
   }
+
   reset () {
     for (const elem of HeadManager.single) {
       if (document.head.contains(this.route[elem].elem)) {
@@ -151,12 +160,12 @@ class HeadManager {
         this.route[elem].elem = undefined
       }
     }
-    for (const collection of HeadManager.selfClosing) {
-      for (const { elem } of this.route[elem]) {
+    for (const tag of HeadManager.selfClosing) {
+      for (const { elem } of this.route[tag]) {
         document.head.removeChild(elem)
       }
-      this.route[elem] = []
-      for (const { elem } of this.original[elem]) {
+      this.route[tag] = []
+      for (const { elem } of this.original[tag]) {
         document.head.appendChild(elem)
       }
     }
@@ -171,7 +180,7 @@ function Head () {
       } else if (HeadManager.selfClosing.includes(elem)) {
         const list = [
           ...head.original[elem],
-          ...head.route[elem]
+          ...head.route[elem],
         ].filter(({ elem }) => {
           return document.head.contains(elem)
         })
@@ -190,7 +199,7 @@ function Head () {
                 }
               }
             }
-          }
+          },
         })
       }
     },
@@ -206,7 +215,7 @@ function Head () {
           head.setSelfClosingItem(elem, item)
         }
       }
-    }
+    },
   })
 }
 

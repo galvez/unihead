@@ -1,19 +1,22 @@
 import Fastify from 'fastify'
+import { on } from 'node:events'
 import { createReadStream } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { Readable } from 'node:stream'
-import { setTimeout } from 'node:timers/promises'
+import mergeStream from 'merge-stream'
+import Head from '../server.js'
 
 const server = Fastify()
 const __dirname = dirname(new URL(import.meta.url).pathname)
 
-async function * render () {
-  await setTimeout(1000)
-  yield '<p>1 second has passed</p>'
-  await setTimeout(1000)
-  yield '<p>2 seconds have passed</p>'
-  await setTimeout(1000)
-  yield '<p>3 seconds have passed</p>'
+async function * renderHead () {
+  const head = new Head({
+    title: 'Page title',
+    base: { href: '/', target: '_blank' },
+    meta: [{ name: 'twitter:title', content: 'Title' }],
+    script: [{src: '/head.js'}],
+  })
+  yield `<head>${head.render()}</head>`
 }
 
 server.get('/head.js', (_, reply) => {
@@ -31,10 +34,19 @@ server.get('/dummy.css', (_, reply) => {
   reply.send('')
 })
 
-server.get('/', (req, reply) => {
-  // const readable = Readable.from(render())
+server.get('/', async (req, reply) => {
   reply.type('text/html')
-  reply.send(createReadStream(resolve(__dirname, './client.html')))
+  reply.send(mergeStream(
+    Readable.from(renderHead()),
+    createReadStream(resolve(__dirname, 'client.html'))
+  ))
+})
+
+server.setErrorHandler((err, req, reply) => {
+  console.log('!', err)
+  console.error(err)
+  reply.code(500)
+  reply.send('Check logs')
 })
 
 await server.listen(3000)
