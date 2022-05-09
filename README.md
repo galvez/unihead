@@ -23,14 +23,12 @@ Read [this blog post]() for more info.
 **Server usage**
 
 </h2>
-  
-The server module of this package supports the adoption of an **_alternative pattern_** where all data required for rendering `<head>` elements is fetched prior to any framework-level component rendering, so it can be streamed to the client right away. 
-  
-Server-side import example:
-  
+
 ```js
 import Head from 'unihead'
 ```
+
+The server module of this package supports the adoption of an **_alternative pattern_** where all data required for rendering `<head>` elements is fetched prior to any framework-level component rendering, so it can be streamed to the client right away. 
 
 The server-side `<head>` cannot be mutated, it must be created only once from an object.
 
@@ -38,8 +36,6 @@ The server-side `<head>` cannot be mutated, it must be created only once from an
 <td valign="top"><br>
 
 ```js
-import Head from 'unihead'
-
 const head = new Head({
   title: 'Page Title'
   meta: [
@@ -48,35 +44,19 @@ const head = new Head({
 })
 ```
 
-Below are two small snippets demonstrating usage with Fastify. There are two methods available `render()`, which produces a full string with all rendered `<head>` elements.
+Below are two small snippets demonstrating usage with [Fastify](https://fastify.io/). 
+There are two methods available: `render()`, which produces a full string with all rendered `<head>` elements.
 
 
 ```js
-const server = Fastify()
-server.get('/', (req, reply) => {
-  const head = new Head({ ... }).reander()
-  reply.type('text/html')
-  reply.send(`<head>${head}</head><body>...</body>`)
+const head = new Head({ ... }).render()
+reply.send(`<head>${head}</head><body>...</body>`)
 })
 ```
   
-And `stream()`, which returns a `Readable` Node.js stream (built from an `AsyncIterator`) that _yields_ one `<head>` element at a time.
-  
-```js
-import Fastify from 'fastify'
-import Head from 'unihead'
+And `stream()`, which returns a `Readable` Node.js stream (built from an `AsyncIterator`) that _yields_ one `<head>` element at a time. 
 
-const server = Fastify()
-
-server.get('/', (req, reply) => {
-  const head = new Head({ ... }).reander()
-  reply.type('text/html')
-  reply.send(`<head>${head}</head><body>...</body>`)
-})
-```
-  
-
-...
+See a full streaming example [here]().
 
 </td>
 </tr>
