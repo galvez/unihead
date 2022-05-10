@@ -3,6 +3,7 @@
   "dependencies": {
     "fastify": "^3.29.0",
     "merge-stream": "^2.0.0",
-    "unihead": "^0.0.4"
+    "unihead": "^0.0.4",
+    "vue": "^3.2.33"
   }
 }
