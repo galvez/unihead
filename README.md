@@ -142,7 +142,7 @@ head.meta.set({ name: '...', content: '...' })
   
 You can also use `push(arr)` to set multiple tags at once.
 
-In the case of `<meta>` tags, `name` and `property` are used to uniquely identify a tag and mutate it without having to add a new one if it already exists. You can also remove collection items:
+In the case of `<meta>` tags, `name` and `property` are used to uniquely identify tags and mutate them without having to add new ones if they already exist. You can also remove collection items:
   
 ```js
 head.meta.remove({name: 'twitter:title'})
