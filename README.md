@@ -1,6 +1,6 @@
 # unihead
 
-Simple, fast, universal JS `<head>` **server-side writer** and **client-side manager**.
+Fast and minimal JS `<head>` **server-side writer** and **client-side manager**.
 
 Nearly every SSR framework out there relies on server-side components to update the `<head>`. This is the case for [Next][1], [Nuxt 2][2], [Nuxt 3][3] and [Remix][4]. The problem with that approach is that the `<head>` becomes dependent on your entire component stack being server-side rendered first, or at least a big part of it, which is generally expensive and prevents you from streaming the `<head>` right away to the client. 
 
@@ -41,9 +41,9 @@ const head = new Head({ ... }).render()
 const html = `<head>${head}</head><body>...</body>`
 ```
   
-And `stream()`, which returns a `Readable` Node.js stream (built from an `AsyncIterator`) that _yields_ one `<head>` element at a time. 
+And `stream()`, which returns a `Readable` Node.js stream (built from an `Iterator`) that _yields_ one `<head>` element at a time. 
 
-See a full streaming example [here]().
+See a full streaming example [here](https://github.com/galvez/unihead/tree/main/example).
 
 ## Client usage
 
