@@ -6,8 +6,6 @@ Nearly every SSR framework out there relies on server-side components to update 
 
 **`unihead`** is a library conveniently packing both a server-side API, that lets you generate `<head>` elements programatically, and a client-side API that hydrates a data model from the rendered elements independently of the framework you're using (all vanilla DOM manipulation) and lets you **mutate it** and also **reset it** to its original state (useful for managing `<head>` inbetween client-side route navigation). 
 
-Read [this blog post]() for more info.
-
 [1]: https://nuxtjs.org/docs/components-glossary/head/
 [2]: https://v3.nuxtjs.org/guide/features/head-management
 [3]: https://github.com/remix-run/remix/blob/main/packages/remix-react/components.tsx#L650
