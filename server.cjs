@@ -1,62 +1,76 @@
+const { Readable } = require('node:stream')
+
 const renderEmpty = Symbol('renderEmpty')
 const renderFull = Symbol('renderFull')
 const htmlEscape = Symbol('htmlEscape')
 const serializeAttrs = Symbol('serializeAttrs')
+const empty = ['base', 'link', 'meta']
+const content = ['title', 'style', 'script']
 
 class Head {
-  static empty = ['base', 'link', 'meta']
-  // Multiple-element head elements
-  static content = ['title', 'style', 'script']
   constructor (head) {
     Object.assign(this, head)
   }
 
-  render () {
+  stream () {
+    return Readable.from(this)
+  }
+
+  * [Symbol.iterator] () {
     let elem
     let fragment = ''
-    for (elem of Head.empty) {
+    for (elem of empty) {
       if (Array.isArray(this[elem])) {
         for (const item of this[elem]) {
-          fragment += this[renderEmpty](elem, item)
+          yield this[renderEmpty](elem, item)
         }
       } else if (this[elem]) {
-        fragment += this[renderEmpty](elem, this[elem])
+        yield this[renderEmpty](elem, this[elem])
       }
     }
-    for (elem of Head.content) {
+    for (elem of content) {
       if (Array.isArray(this[elem])) {
         for (const item of this[elem]) {
-          fragment += this[renderFull](elem, item)
+          for (const element of this[renderFull](elem, this[elem])) {
+            yield element
+          }
         }
       } else if (this[elem]) {
-        fragment += this[renderFull](elem, this[elem])
+        for (const element of this[renderFull](elem, this[elem])) {
+          yield element
+        }
       }
+    }
+  }
+
+  render () {
+    let fragment = ''
+    for (const chunk of this) {
+      fragment += chunk
     }
     return fragment
   }
 
-  [renderFull] (elem, item) {
+  * [renderFull] (elem, item) {
     if (typeof item === 'string') {
-      return `<${elem}>${item}</${elem}>\n`
+      yield `<${elem}>${item}</${elem}>\n`
     } else {
-      let fragment = ''
       if (Array.isArray(item)) {
         const [attrs, content] = item
         const attrKeys = Object.keys(attrs)
         if (attrKeys.length) {
-          fragment += `<${elem} ${this[serializeAttrs](attrKeys, attrs)}>${content || ''}</${elem}>\n`
+          yield `<${elem} ${this[serializeAttrs](attrKeys, attrs)}>${content || ''}</${elem}>\n`
         } else {
-          fragment += `<${elem}>${content || ''}</${elem}>\n`
+          yield `<${elem}>${content || ''}</${elem}>\n`
         }
       } else if (typeof item === 'object' && item !== null) {
         const attrKeys = Object.keys(item)
         if (attrKeys.length) {
-          fragment += `<${elem} ${this[serializeAttrs](attrKeys, item)}></${elem}>\n`
+          yield `<${elem} ${this[serializeAttrs](attrKeys, item)}></${elem}>\n`
         } else {
-          fragment += `<${elem}></${elem}>\n`
+          yield `<${elem}></${elem}>\n`
         }
       }
-      return fragment
     }
   }
 
@@ -64,11 +78,10 @@ class Head {
     let fragment = ''
     const attrKeys = Object.keys(item)
     if (attrKeys.length) {
-      fragment += `<${elem} ${this[serializeAttrs](attrKeys, item)}>\n`
+      return `<${elem} ${this[serializeAttrs](attrKeys, item)}>\n`
     } else {
-      fragment += `<${elem}>\n`
+      return `<${elem}>\n`
     }
-    return fragment
   }
 
   [serializeAttrs] (keys, source) {

@@ -1,3 +1,4 @@
+import { on } from 'events'
 import t from 'tap'
 import Head from '../server.mjs'
 
@@ -43,4 +44,17 @@ t.test('can generate link tags', (t) => {
     '<link rel="icon" href="favicon.ico">\n' +
     '<link rel="stylesheet" type="text/css" href="https://example.com/sheet.css">\n'
   ))
+})
+
+t.test('can stream', (t) => {
+  const head = new Head({
+    title: 'Page Title',
+  })
+  const chunks = []
+  const stream = head.stream()
+  stream.on('data', (data) => {
+    chunks.push(data)
+    t.ok(chunks.includes('<title>Page Title</title>\n'))
+    t.end()
+  })
 })

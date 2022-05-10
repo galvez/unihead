@@ -194,10 +194,10 @@ class HeadManager {
   }
 
   reset () {
-    for (const elem of HeadManager.single) {
-      if (this.document.head.contains(this.route[elem].elem)) {
-        this.document.head.replaceChild(this.original[elem].elem, this.route[elem].elem)
-        this.route[elem].elem = undefined
+    for (const tag of HeadManager.single) {
+      if (this.document.head.contains(this.route[tag].elem)) {
+        this.document.head.replaceChild(this.original[tag].elem, this.route[tag].elem)
+        this.route[tag].elem = new HeadElement(null, tag, this.document)
       }
     }
     for (const tag of HeadManager.collective) {
@@ -206,7 +206,9 @@ class HeadManager {
       }
       this.route[tag] = []
       for (const { elem } of this.original[tag]) {
-        this.document.head.appendChild(elem)
+        if (!this.document.head.contains(elem)) {
+          this.document.head.appendChild(elem)
+        }
       }
     }
   }
