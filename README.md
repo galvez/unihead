@@ -121,31 +121,26 @@ The main difference between the *server* and *client* modules is that the latter
 - `head.base`
 - `head.meta[]`
 - `head.link[]`
-- `head.style[]`
-- `head.script[]`
 
 </td>
 <td valign="top"><br>
   
-For the single, empty elements `title` and `base`, assignment:
+For standalone self-closing elements, use assignment:
 
 ```js
 head.title = 'Page title'
 head.base = { href: 'https://...', target: '_blank' }
 ```
 
-For the collective empty elements `meta` and `link`, `set()`:
+For collective self-closing elements, use `set()`:
 
 ```js
-window.head.meta.set({
-  name: 'twitter:title',
-  content: 'Title'
-})
+window.head.meta.set({ name: '...', content: '...' })
 ```
 
-In the case of `<meta>` tags, `name` and `property` are used to uniquely identify a tag and mutate it without having to add a new one if it already exists.
+In the case of `<meta>` tags, `name` and `property` are used to uniquely identify a tag and mutate it without having to add a new one if it already exists. 
   
-To remove collection items:
+You can also remove collection items:
   
 ```js
 window.head.meta.remove((elem) => {
@@ -153,7 +148,7 @@ window.head.meta.remove((elem) => {
 })
 ```
 
-Finally, you can fully reset <head> to its original state:
+Finally, you can also fully reset any changes made:
   
 ```js
 window.head.reset()
