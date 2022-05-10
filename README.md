@@ -117,10 +117,12 @@ This option is provided for easily integrating **`unihead`** with any kind of va
 
 The main difference between the *server* and *client* modules is that the latter allows you to mutate the data, i.e., change existing elements or add new ones if needed. API follows:
   
-- `head.title`
-- `head.base`
-- `head.meta[]`
-- `head.link[]`
+- `head.title=`
+- `head.base=`
+- `head.meta[].set()`
+- `head.link[].set()`
+- `head.meta[].push()`
+- `head.link[].push()`
 
 </td>
 <td valign="top"><br>
@@ -137,22 +139,51 @@ For collective self-closing elements, use `set()`:
 ```js
 window.head.meta.set({ name: '...', content: '...' })
 ```
+  
+You can also use the `push(arr)` method to set multiple tags at once.
 
 In the case of `<meta>` tags, `name` and `property` are used to uniquely identify a tag and mutate it without having to add a new one if it already exists. 
   
 You can also remove collection items:
   
 ```js
-window.head.meta.remove((elem) => {
-  return elem.attrs.name === 'twitter:title'
+head.meta.remove({name: 'twitter:title'})
 })
 ```
 
 Finally, you can also fully reset any changes made:
   
 ```js
-window.head.reset()
+head.reset()
 ```
+
+</td>
+</tr>
+</table>
+
+  
+<table>
+<tr>
+<td width="300px" valign="top">
+
+<h2>
+
+**Limitations**
+
+</h2>
+
+When compared to libraries like [`vueuse/head`](), which is integrated with a framework, you'll notice **`unihead`** is missing a few features.
+
+</td>
+<td valign="top"><br>
+  
+There's no way to set `<html>` and `<body>` attributes.
+
+There's no way to create `<script>` tags with content, just attributes.
+  
+Similarly, there's no way to create `<style>` tags.
+  
+**`unihead`** limits itself to either empty or self-closing elements under `<head>`.
 
 </td>
 </tr>
