@@ -13,6 +13,12 @@ Read [this blog post]() for more info.
 [3]: https://github.com/remix-run/remix/blob/main/packages/remix-react/components.tsx#L650
 [4]: https://nextjs.org/docs/api-reference/next/head
 
+## Install
+
+```bash
+npm install unihead --save
+```
+
 ## Server usage
 
 The server module of this package supports the adoption of an **_alternative pattern_** where all data required for rendering `<head>` elements is fetched prior to any framework-level component rendering, so it can be streamed to the client right away. 
