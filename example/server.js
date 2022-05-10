@@ -1,22 +1,11 @@
 import Fastify from 'fastify'
 import { createReadStream } from 'node:fs'
 import { dirname, resolve } from 'node:path'
-import { Readable } from 'node:stream'
 import mergeStream from 'merge-stream'
-import Head from '../server.js'
+import Head from 'unihead'
 
 const server = Fastify()
 const __dirname = dirname(new URL(import.meta.url).pathname)
-
-async function * renderHead () {
-  const head = new Head({
-    title: 'Page title',
-    base: { href: '/', target: '_blank' },
-    meta: [{ name: 'twitter:title', content: 'Title' }],
-    script: [{ src: '/head.js' }],
-  })
-  yield `<head>${head.render()}</head>`
-}
 
 server.get('/head.js', (_, reply) => {
   reply.type('text/javascript')
@@ -36,7 +25,12 @@ server.get('/dummy.css', (_, reply) => {
 server.get('/', async (req, reply) => {
   reply.type('text/html')
   reply.send(mergeStream(
-    Readable.from(renderHead()),
+    new Head({
+      title: 'Page title',
+      base: { href: '/', target: '_blank' },
+      meta: [{ name: 'twitter:title', content: 'Title' }],
+      script: [{ src: '/head.js' }],
+    }).stream(),
     createReadStream(resolve(__dirname, 'client.html')),
   ))
 })
