@@ -137,10 +137,10 @@ head.base = { href: 'https://...', target: '_blank' }
 For collective self-closing elements, use `set()`:
 
 ```js
-window.head.meta.set({ name: '...', content: '...' })
+head.meta.set({ name: '...', content: '...' })
 ```
   
-You can also use the `push(arr)` method to set multiple tags at once.
+You can also use `push(arr)` to set multiple tags at once.
 
 In the case of `<meta>` tags, `name` and `property` are used to uniquely identify a tag and mutate it without having to add a new one if it already exists. 
   
