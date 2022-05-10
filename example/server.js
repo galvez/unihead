@@ -1,5 +1,4 @@
 import Fastify from 'fastify'
-import { on } from 'node:events'
 import { createReadStream } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { Readable } from 'node:stream'
@@ -14,14 +13,14 @@ async function * renderHead () {
     title: 'Page title',
     base: { href: '/', target: '_blank' },
     meta: [{ name: 'twitter:title', content: 'Title' }],
-    script: [{src: '/head.js'}],
+    script: [{ src: '/head.js' }],
   })
   yield `<head>${head.render()}</head>`
 }
 
 server.get('/head.js', (_, reply) => {
   reply.type('text/javascript')
-  reply.send(createReadStream(resolve(__dirname, '..', 'client.js')))
+  reply.send(createReadStream(resolve(__dirname, '..', 'dist/unihead.umd.js')))
 })
 
 server.get('/dummy.js', (_, reply) => {
@@ -38,12 +37,11 @@ server.get('/', async (req, reply) => {
   reply.type('text/html')
   reply.send(mergeStream(
     Readable.from(renderHead()),
-    createReadStream(resolve(__dirname, 'client.html'))
+    createReadStream(resolve(__dirname, 'client.html')),
   ))
 })
 
 server.setErrorHandler((err, req, reply) => {
-  console.log('!', err)
   console.error(err)
   reply.code(500)
   reply.send('Check logs')

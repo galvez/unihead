@@ -1,4 +1,3 @@
-// MIT licensed, taken from https://github.com/sindresorhus/stringify-attributes
 const renderEmpty = Symbol('renderEmpty')
 const renderFull = Symbol('renderFull')
 const htmlEscape = Symbol('htmlEscape')
@@ -81,6 +80,7 @@ class Head {
     return `${serialized}${keys[lastKey]}="${this[htmlEscape](source[keys[lastKey]])}"`
   }
 
+  // MIT licensed, taken from https://github.com/sindresorhus/stringify-attributes
   [htmlEscape] (str) {
     return str
       .replace(/&/g, '&amp;')

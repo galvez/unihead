@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "fastify": "^3.29.0",
+    "merge-stream": "^2.0.0"
+  }
+}
