@@ -1,6 +1,6 @@
 # unihead
 
-Simple, fast, universal JS `<head>` server-side writer and client-side manager.
+Simple, fast, universal JS `<head>` **server-side writer** and **client-side manager**.
 
 Nearly every SSR framework out there relies on server-side components to update the `<head>`. This is the case for [Next][1], [Nuxt 2][2], [Nuxt 3][3] and [Remix][4]. The problem with that approach is that the `<head>` becomes dependent on your entire component stack being server-side rendered first, which is generally expensive and prevents you from streaming the `<head>` right away to the client. 
 
@@ -142,13 +142,10 @@ head.meta.set({ name: '...', content: '...' })
   
 You can also use `push(arr)` to set multiple tags at once.
 
-In the case of `<meta>` tags, `name` and `property` are used to uniquely identify a tag and mutate it without having to add a new one if it already exists. 
-  
-You can also remove collection items:
+In the case of `<meta>` tags, `name` and `property` are used to uniquely identify a tag and mutate it without having to add a new one if it already exists. You can also remove collection items:
   
 ```js
 head.meta.remove({name: 'twitter:title'})
-})
 ```
 
 Finally, you can also fully reset any changes made:
