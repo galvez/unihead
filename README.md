@@ -43,7 +43,7 @@ const html = `<head>${head}</head><body>...</body>`
   
 And `stream()`, which returns a `Readable` Node.js stream (built from an `Iterator`) that _yields_ one `<head>` element at a time. 
 
-See a full streaming example [here]().
+See a full streaming example [here](https://github.com/galvez/unihead/tree/main/example).
 
 ## Client usage
 
