@@ -118,12 +118,12 @@ head.reset()
 
 ## Limitations
 
-When compared to libraries like [`vueuse/head`](https://github.com/vueuse/head), which is integrated with a framework, you'll notice **`unihead`** is missing a few features.
+When compared to libraries like [`vueuse/head`](https://github.com/vueuse/head), which is integrated with a framework, you'll notice **`unihead`** is missing a few features:
   
-There's no way to set `<html>` and `<body>` attributes.
+- There's no way to set `<html>` and `<body>` attributes.
 
-There's no way to create `<script>` tags with content, just attributes.
+- There's no way to create `<script>` tags with content, just attributes.
   
-Similarly, there's no way to create `<style>` tags.
+- Similarly, there's no way to create `<style>` tags.
   
 **`unihead`** limits itself to either empty or self-closing elements under `<head>`.
