@@ -41,7 +41,7 @@ const head = new Head({ ... }).render()
 const html = `<head>${head}</head><body>...</body>`
 ```
   
-And `stream()`, which returns a `Readable` Node.js stream (built from an `AsyncIterator`) that _yields_ one `<head>` element at a time. 
+And `stream()`, which returns a `Readable` Node.js stream (built from an `Iterator`) that _yields_ one `<head>` element at a time. 
 
 See a full streaming example [here]().
 
