@@ -57,7 +57,7 @@ import Head from 'unihead/client'
 const head = new Head()
 ```
   
-### Vanilla script include (last element of your `<head>`):
+### Vanilla script include
 
 ```html
 <head>
