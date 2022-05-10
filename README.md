@@ -13,23 +13,11 @@ Read [this blog post]() for more info.
 [3]: https://github.com/remix-run/remix/blob/main/packages/remix-react/components.tsx#L650
 [4]: https://nextjs.org/docs/api-reference/next/head
 
-
-<table>
-<tr>
-<td width="300px" valign="top">
-
-<h2>
-
-**Server usage**
-
-</h2>
+## Server usage
 
 The server module of this package supports the adoption of an **_alternative pattern_** where all data required for rendering `<head>` elements is fetched prior to any framework-level component rendering, so it can be streamed to the client right away. 
 
 The server-side `<head>` cannot be mutated, it must be created only once from an object.
-
-</td>
-<td valign="top"><br>
 
 ```js
 import Head from 'unihead'
@@ -42,32 +30,18 @@ const head = new Head({
 })
 ```
 
-Below are two small snippets demonstrating usage with [Fastify](https://fastify.io/). 
 There are two methods available: `render()`, which produces a full string with all rendered `<head>` elements.
-
 
 ```js
 const head = new Head({ ... }).render()
-reply.send(`<head>${head}</head><body>...</body>`)
+const html = `<head>${head}</head><body>...</body>`
 ```
   
 And `stream()`, which returns a `Readable` Node.js stream (built from an `AsyncIterator`) that _yields_ one `<head>` element at a time. 
 
 See a full streaming example [here]().
 
-</td>
-</tr>
-</table>
-
-<table>
-<tr>
-<td width="300px" valign="top">
-
-<h2>
-
-**Client usage**
-
-</h2>
+## Client usage
 
 If you're using a tool such as Vite to build your client application build, import the `client` module of the package and instantiate Head the same way it is done on the server.
   
@@ -75,11 +49,7 @@ A global registration distribution is also available, that lets you simply inclu
 
 The client `Head` class will load the rendered `<head>` from the page internally in a data model and let you modify it or reset it to its orignal state if needed.
 
-
-</td>
-<td valign="top"><br>
-  
-Import using a build tool:
+### Import using a build tool
 
 ```js
 import Head from 'unihead/client'
@@ -87,7 +57,7 @@ import Head from 'unihead/client'
 const head = new Head()
 ```
   
-Vanilla script include (last element of your `<head>`):
+### Vanilla script include (last element of your `<head>`):
 
 ```html
 <head>
@@ -100,20 +70,7 @@ In which case `window.head` is available immediately afterwards, automatically i
 
 This option is provided for easily integrating **`unihead`** with any kind of vanilla HTML/JS application.
 
-</td>
-</tr>
-</table>
-
-
-<table>
-<tr>
-<td width="300px" valign="top">
-
-<h2>
-
-**Mutation methods**
-
-</h2>
+## Mutation methods
 
 The main difference between the *server* and *client* modules is that the latter allows you to mutate the data, i.e., change existing elements or add new ones if needed. API follows:
   
@@ -123,9 +80,6 @@ The main difference between the *server* and *client* modules is that the latter
 - `head.link[].set()`
 - `head.meta[].push()`
 - `head.link[].push()`
-
-</td>
-<td valign="top"><br>
   
 For standalone self-closing elements, use assignment:
 
@@ -154,25 +108,9 @@ Finally, you can also fully reset any changes made:
 head.reset()
 ```
 
-</td>
-</tr>
-</table>
-
-  
-<table>
-<tr>
-<td width="300px" valign="top">
-
-<h2>
-
-**Limitations**
-
-</h2>
+## Limitations
 
 When compared to libraries like [`vueuse/head`](https://github.com/vueuse/head), which is integrated with a framework, you'll notice **`unihead`** is missing a few features.
-
-</td>
-<td valign="top"><br>
   
 There's no way to set `<html>` and `<body>` attributes.
 
@@ -181,8 +119,3 @@ There's no way to create `<script>` tags with content, just attributes.
 Similarly, there's no way to create `<style>` tags.
   
 **`unihead`** limits itself to either empty or self-closing elements under `<head>`.
-
-</td>
-</tr>
-</table>
-
