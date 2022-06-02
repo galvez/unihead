@@ -123,21 +123,25 @@ class HeadManager {
       }
     }
     if (initial) {
-      for (const [tag, tagDef] of Object.entries(initial)) {
-        if (HeadManager.single.includes(tag)) {
-          if (typeof tagDef === 'string') {
-            this.setSingle(tag, { value: tagDef })
-          } else if (typeof tagDef === 'object' && tagDef !== null) {
-            this.setSingle(tag, { attrs: tagDef })
+      this.update(initial)
+    }
+  }
+
+  update (initial) {
+    for (const [tag, tagDef] of Object.entries(initial)) {
+      if (HeadManager.single.includes(tag)) {
+        if (typeof tagDef === 'string') {
+          this.setSingle(tag, { value: tagDef })
+        } else if (typeof tagDef === 'object' && tagDef !== null) {
+          this.setSingle(tag, { attrs: tagDef })
+        }
+      } else if (HeadManager.collective.includes(tag)) {
+        if (Array.isArray(tagDef)) {
+          for (const def of tagDef) {
+            this.setItem(tag, def)
           }
-        } else if (HeadManager.collective.includes(tag)) {
-          if (Array.isArray(tagDef)) {
-            for (const def of tagDef) {
-              this.setItem(tag, def)
-            }
-          } else {
-            this.setItem(tag, tagDef)
-          }
+        } else {
+          this.setItem(tag, tagDef)
         }
       }
     }
