@@ -95,7 +95,8 @@ class Head {
 
   // MIT licensed, taken from https://github.com/sindresorhus/stringify-attributes
   [htmlEscape] (str) {
-    return str
+    return (str || '')
+      .toString()
       .replace(/&/g, '&amp;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#39;')
