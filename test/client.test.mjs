@@ -82,6 +82,26 @@ t.test('can mutate meta tags', (t) => {
   }
 })
 
+t.test('can mutate meta tags with update', (t) => {
+  t.plan(4)
+  const window = new Window()
+  const document = window.document
+  document.head.innerHTML = `
+    <meta property="twitter:title" content="Page Title">
+    <meta property="twitter:url" content="https://example.com">
+  `
+  const head = getHead(null, document)
+  const changed = [
+    { property: 'twitter:title', content: 'Changed Title'},
+    { property: 'twitter:url', content: 'https://example.com/2' },
+  ]
+  head.update({ meta: changed })
+  for (const [i, metaTag] of Object.entries([...document.querySelectorAll('head > meta')])) {
+    t.equal(changed[i].property, metaTag.attributes.property.value)
+    t.equal(changed[i].content, metaTag.attributes.content.value)
+  }
+})
+
 
 t.test('can reset to initial state', (t) => {
   t.plan(10)

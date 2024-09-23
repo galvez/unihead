@@ -222,6 +222,9 @@ class Head {
   constructor (initial, document) {
     return new Proxy(new HeadManager(initial, document), {
       get (head, elem) {
+        if (elem === 'update') {
+          return initialHead => head.update(initialHead)
+        }
         if (elem === 'reset') {
           return () => head.reset()
         }
